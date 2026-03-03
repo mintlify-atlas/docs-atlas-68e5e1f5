@@ -1,0 +1,109 @@
+---
+title: Introduction
+description: A lightweight Android app that translates plain text into Morse code with clipboard support
+---
+
+<img
+  src="https://raw.githubusercontent.com/Az4zeel/MorseIt/master/morseit-1.png"
+  alt="MorseIt App Screenshot"
+  style={{ borderRadius: '0.5rem' }}
+/>
+
+## What is MorseIt?
+
+MorseIt is a lightweight Android app that translates plain text into Morse code. Built with simplicity in mind, it works completely offline and provides instant text-to-Morse translation with one-tap clipboard support.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Instant Translation" icon="language">
+    Enter letters, digits, or punctuation and get the Morse code equivalent instantly
+  </Card>
+  <Card title="Clipboard Support" icon="clipboard">
+    Copy the Morse output to the system clipboard with one tap
+  </Card>
+  <Card title="Offline First" icon="wifi-slash">
+    All translation happens on-device with no internet connection required
+  </Card>
+  <Card title="International Standard" icon="globe">
+    Uses the International Morse Code table for accurate translations
+  </Card>
+</CardGroup>
+
+## How It Works
+
+Translation happens entirely on-device inside `MainActivity.translateToMorse()`:
+
+1. The app populates a `HashMap<Character, String>` with the International Morse Code table for letters A–Z (both cases), digits 0–9, and supported punctuation
+2. The app iterates over the input string character by character
+3. For each character, the app looks it up in the map. If a mapping exists, it appends the Morse sequence to a `StringBuilder`; otherwise, it passes the original character through unchanged
+4. The app appends a space after each character's Morse representation, producing a space-delimited output string
+5. The output text view displays the result
+
+The **Copy** button reads the current Morse text and places it on the system clipboard using `ClipboardManager`. A short toast message confirms the copy.
+
+## Supported Characters
+
+<AccordionGroup>
+  <Accordion title="Letters (A-Z)">
+    All 26 letters of the alphabet are supported, case-insensitive. For example:
+    - A → `.-`
+    - B → `-...`
+    - C → `-.-.`
+  </Accordion>
+
+  <Accordion title="Digits (0-9)">
+    | Digit | Morse |
+    |:---:|:---:|
+    | 0 | `-----` |
+    | 1 | `.----` |
+    | 2 | `..---` |
+    | 3 | `...--` |
+    | 4 | `....-` |
+    | 5 | `.....` |
+    | 6 | `-....` |
+    | 7 | `--...` |
+    | 8 | `---..` |
+    | 9 | `----.` |
+  </Accordion>
+
+  <Accordion title="Punctuation">
+    | Symbol | Morse |
+    |:---:|:---:|
+    | `.` (period) | `.-.-.-` |
+    | `,` (comma) | `--..--` |
+    | `?` (question mark) | `..--..` |
+    | `=` (equals sign) | `-...-` |
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Unsupported characters are passed through unchanged in the output.
+</Note>
+
+## Get Started
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Install and start using MorseIt in minutes
+  </Card>
+  <Card title="Build from Source" icon="code" href="/development/build-and-run">
+    Clone the repository and build the app yourself
+  </Card>
+</CardGroup>
+
+## Tech Stack
+
+| Component | Technology |
+|---|---|
+| Language | Java |
+| UI toolkit | Android SDK (XML layouts, `ConstraintLayout`) |
+| Font | Roboto (downloaded at runtime via Google Fonts) |
+| Support library | `com.android.support:appcompat-v7:28.0.0` |
+| Build system | Gradle (Android Gradle Plugin 3.2.1) |
+
+## System Requirements
+
+- **Minimum SDK:** Android 6.0 Marshmallow (API level 23)
+- **Target SDK:** Android 9.0 Pie (API level 28)
+- **Compile SDK:** API level 28

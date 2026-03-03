@@ -1,0 +1,312 @@
+---
+title: 'Project Structure'
+description: 'Code organization and architecture of the MorseIt Android app'
+---
+
+## Overview
+
+MorseIt follows the standard Android project structure with a single Activity architecture. The app is lightweight and focused on text-to-Morse translation with clipboard functionality.
+
+## Directory Structure
+
+```
+MorseIt/
+├── app/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/subin/morseit/
+│   │   │   │   └── MainActivity.java
+│   │   │   ├── res/
+│   │   │   │   ├── drawable/
+│   │   │   │   ├── font/
+│   │   │   │   ├── layout/
+│   │   │   │   ├── mipmap-*/
+│   │   │   │   └── values/
+│   │   │   └── AndroidManifest.xml
+│   │   ├── androidTest/java/com/subin/morseit/
+│   │   │   └── ExampleInstrumentedTest.java
+│   │   └── test/java/com/subin/morseit/
+│   │       └── ExampleUnitTest.java
+│   ├── build.gradle
+│   └── proguard-rules.pro
+├── gradle/
+├── build.gradle
+├── settings.gradle
+└── gradle.properties
+```
+
+## Package Structure
+
+The application uses a simple package structure under `com.subin.morseit`:
+
+- **Package**: `com.subin.morseit`
+- **Main Activity**: `MainActivity.java`
+- **Application ID**: `com.subin.morseit`
+
+<Note>
+  As a single-Activity app, all UI logic and business logic are contained within `MainActivity.java`.
+</Note>
+
+## MainActivity Architecture
+
+The `MainActivity` class (`app/src/main/java/com/subin/morseit/MainActivity.java`) is the core of the application.
+
+### Class Structure
+
+```java
+package com.subin.morseit;
+
+public class MainActivity extends AppCompatActivity {
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
+    TextView t1;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) { ... }
+    
+    public String translateToMorse(String input_field_text) { ... }
+}
+```
+
+### Key Components
+
+<CardGroup cols={2}>
+  <Card title="UI Components" icon="mobile">
+    - `EditText` - Input field for plain text
+    - `TextView` - Output display for Morse code
+    - `Button` (Translate) - Triggers translation
+    - `Button` (Copy) - Copies result to clipboard
+  </Card>
+  
+  <Card title="Core Functionality" icon="code">
+    - `translateToMorse()` - Converts text to Morse
+    - `ClipboardManager` - Handles copy operations
+    - `HashMap<Character, String>` - Morse code mapping
+  </Card>
+</CardGroup>
+
+### Translation Logic
+
+The `translateToMorse()` method (`MainActivity.java:62`) implements the core translation algorithm:
+
+1. Creates a `HashMap` mapping characters to Morse code patterns
+2. Iterates through input text character by character
+3. Looks up each character in the map
+4. Appends Morse code or original character (if not found)
+5. Returns the complete Morse code string
+
+<Accordion title="Supported Characters">
+  The translation map includes:
+  - Uppercase letters (A-Z)
+  - Lowercase letters (a-z)
+  - Digits (0-9)
+  - Punctuation (. , ? =)
+  - Spaces and unsupported characters are preserved as-is
+</Accordion>
+
+### Event Handlers
+
+Two primary click listeners handle user interactions:
+
+**Translate Button** (`MainActivity.java:32-41`):
+```java
+button_translate.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        String input_field_text = input_field.getText().toString();
+        String morse_code = translateToMorse(input_field_text);
+        output_field.setText(morse_code);
+    }
+});
+```
+
+**Copy Button** (`MainActivity.java:46-59`):
+```java
+button_copy.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        String text = t1.getText().toString();
+        myClip = ClipData.newPlainText("text", text);
+        myClipboard.setPrimaryClip(myClip);
+        Toast.makeText(getApplicationContext(), "Text Copied",
+                Toast.LENGTH_SHORT).show();
+    }
+});
+```
+
+## Resource Files (res/)
+
+### Layout Files
+
+**activity_main.xml** (`app/src/main/res/layout/activity_main.xml`):
+- Uses `ConstraintLayout` as the root layout
+- Contains input `EditText` with ID `@+id/editText`
+- Contains output `TextView` with ID `@+id/textView`
+- Two `Button` elements with custom backgrounds
+- All components use constraint-based positioning
+
+### Drawable Resources
+
+Custom drawable shapes for buttons:
+- `button_shape_1.xml` - Translate and Copy button styling
+- `button_shape_2.xml` - Input/output field backgrounds
+- `ic_launcher_background.xml` - App icon background
+- `ic_launcher_foreground.xml` - App icon foreground
+
+### Font Resources
+
+The app includes custom fonts:
+- `domine.xml` - Domine font family
+- `roboto.xml` - Roboto font (used in output TextView)
+
+### Values Resources
+
+<CodeGroup>
+```xml strings.xml
+<resources>
+    <string name="app_name">MorseIt</string>
+    <string name="translate">Translate</string>
+    <string name="copy">Copy</string>
+    <string name="input_hint">Enter text here</string>
+    <string name="output">Morse code appears here</string>
+</resources>
+```
+
+```xml colors.xml
+<resources>
+    <color name="colorPrimary">...</color>
+    <color name="colorPrimaryDark">...</color>
+    <color name="colorAccent">...</color>
+</resources>
+```
+
+```xml styles.xml
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Theme customization -->
+    </style>
+</resources>
+```
+</CodeGroup>
+
+## AndroidManifest.xml
+
+The manifest file (`app/src/main/AndroidManifest.xml`) defines:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.subin.morseit">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+</manifest>
+```
+
+<Note>
+  No special permissions are required as the app only uses standard UI components and clipboard access.
+</Note>
+
+## Build Configuration
+
+### app/build.gradle
+
+Key configuration settings:
+
+```gradle
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.subin.morseit"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+```
+
+### Root build.gradle
+
+Project-level Gradle configuration:
+
+```gradle
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+```
+
+## Testing Structure
+
+### Unit Tests
+
+Location: `app/src/test/java/com/subin/morseit/ExampleUnitTest.java`
+- JUnit-based tests
+- Run on the JVM without requiring an Android device
+
+### Instrumented Tests
+
+Location: `app/src/androidTest/java/com/subin/morseit/ExampleInstrumentedTest.java`
+- Espresso-based UI tests
+- Require a connected device or emulator
+- Use AndroidJUnitRunner
+
+## Architecture Patterns
+
+MorseIt uses a simple, straightforward architecture:
+
+- **Pattern**: Single Activity with inline event handlers
+- **UI Framework**: Android Views with ConstraintLayout
+- **Data**: In-memory HashMap for character mapping
+- **State Management**: Direct view manipulation
+
+<Warning>
+  This architecture is suitable for simple apps like MorseIt. For larger projects, consider using MVVM, MVP, or similar patterns with proper separation of concerns.
+</Warning>
+
+## Key Files Reference
+
+| File | Location | Purpose |
+|------|----------|----------|
+| MainActivity.java | `app/src/main/java/com/subin/morseit/` | Core application logic |
+| activity_main.xml | `app/src/main/res/layout/` | Main UI layout |
+| AndroidManifest.xml | `app/src/main/` | App configuration |
+| build.gradle (app) | `app/` | Module-level build config |
+| build.gradle (project) | Root | Project-level build config |
+
+## Next Steps
+
+- Review the [Setup Guide](/development/setup) for environment configuration
+- Learn how to [Build and Run](/development/build-and-run) the application
+- Explore the source code in `app/src/main/java/com/subin/morseit/`

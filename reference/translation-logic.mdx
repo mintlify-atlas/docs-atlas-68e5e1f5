@@ -1,0 +1,155 @@
+---
+title: Translation Logic
+description: Understanding how MorseIt translates text to Morse code
+---
+
+## Overview
+
+MorseIt uses a HashMap-based translation algorithm to convert plain text into Morse code. The translation is handled by the `translateToMorse()` method in the MainActivity class.
+
+## Translation Method
+
+The core translation logic is implemented in `MainActivity.java:62-144`:
+
+```java
+public String translateToMorse(String input_field_text) {
+    Map<Character, String> map = new HashMap<>();
+    StringBuilder morse_code = new StringBuilder();
+    
+    // Character mappings...
+    
+    for (int i = 0; i < input_field_text.length(); i++) {
+        char upperChar = (char) (input_field_text.charAt(i));
+        String fetchedChar = map.get(upperChar);
+        if (fetchedChar != null) {
+            morse_code.append(map.get(upperChar));
+        } else {
+            morse_code.append(input_field_text.charAt(i));
+        }
+        morse_code.append(' ');
+    }
+    return morse_code.toString();
+}
+```
+
+## Algorithm Breakdown
+
+### 1. HashMap Initialization
+
+The method creates a new `HashMap<Character, String>` that maps individual characters to their Morse code equivalents:
+
+```java
+Map<Character, String> map = new HashMap<>();
+```
+
+<Note>
+  The HashMap is populated with 88 character mappings, including uppercase letters (A-Z), lowercase letters (a-z), digits (0-9), and select punctuation marks.
+</Note>
+
+### 2. Character Mapping Process
+
+Each character is mapped to its Morse code representation using the `.put()` method:
+
+```java
+map.put('A', ".-");
+map.put('B', "-...");
+map.put('C', "-.-.");
+// ... and so on
+```
+
+<Expandable title="Example: Complete Letter A-E Mappings">
+```java
+map.put('A', ".-");
+map.put('B', "-...");
+map.put('C', "-.-.");
+map.put('D', "-..");
+map.put('E', ".");
+map.put('a', ".-");
+map.put('b', "-...");
+map.put('c', "-.-.");
+map.put('d', "-..");
+map.put('e', ".");
+```
+</Expandable>
+
+### 3. Character Lookup Algorithm
+
+The translation loop processes each character in the input string:
+
+1. **Iterate** through each character in the input string
+2. **Lookup** the character in the HashMap
+3. **Append** the Morse code if found, or the original character if not found
+4. **Add space** after each character for readability
+
+```java
+for (int i = 0; i < input_field_text.length(); i++) {
+    char upperChar = (char) (input_field_text.charAt(i));
+    String fetchedChar = map.get(upperChar);
+    if (fetchedChar != null) {
+        morse_code.append(map.get(upperChar));
+    } else {
+        morse_code.append(input_field_text.charAt(i));
+    }
+    morse_code.append(' ');
+}
+```
+
+### 4. Fallback Behavior
+
+If a character is not found in the HashMap (like special symbols or unsupported characters), the algorithm preserves the original character:
+
+```java
+if (fetchedChar != null) {
+    morse_code.append(map.get(upperChar));
+} else {
+    morse_code.append(input_field_text.charAt(i));  // Keep original character
+}
+```
+
+<Note type="warning">
+  Unsupported characters are passed through as-is rather than being ignored or causing errors.
+</Note>
+
+## StringBuilder Usage
+
+The method uses `StringBuilder` for efficient string concatenation:
+
+```java
+StringBuilder morse_code = new StringBuilder();
+```
+
+This approach is more memory-efficient than using string concatenation with the `+` operator, especially when processing longer input strings.
+
+## Case Sensitivity
+
+The HashMap includes separate entries for both uppercase and lowercase letters, but they map to identical Morse code sequences:
+
+```java
+map.put('A', ".-");  // Uppercase
+map.put('a', ".-");  // Lowercase - same Morse code
+```
+
+This means the translation is case-insensitive in output while accepting both cases in input.
+
+## Space Handling
+
+Each translated character is followed by a space character to separate Morse code sequences in the output:
+
+```java
+morse_code.append(' ');  // Added after each character
+```
+
+This makes the Morse code output more readable and easier to parse visually.
+
+## Performance Characteristics
+
+- **Time Complexity**: O(n) where n is the length of the input string
+- **Space Complexity**: O(n) for the output StringBuilder
+- **HashMap Lookup**: O(1) average case for character lookup
+
+## Source Code Location
+
+The complete implementation can be found in:
+- File: `app/src/main/java/com/subin/morseit/MainActivity.java`
+- Method: `translateToMorse(String input_field_text)`
+- Lines: 62-144

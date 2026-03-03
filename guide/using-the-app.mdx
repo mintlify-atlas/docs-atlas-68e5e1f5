@@ -1,0 +1,100 @@
+---
+title: Using the App
+description: Learn how to translate text to Morse code and use MorseIt's features
+---
+
+## Overview
+
+MorseIt provides a simple and intuitive interface for translating plain text into Morse code. The app includes two main features: translation and clipboard copying.
+
+## Getting Started
+
+<Steps>
+  <Step title="Enter Your Text">
+    Type or paste the text you want to translate into the input field at the top of the screen. MorseIt supports letters (both uppercase and lowercase), digits, and common punctuation marks.
+  </Step>
+  
+  <Step title="Translate to Morse Code">
+    Tap the **Translate** button to convert your text into Morse code. The translation will appear instantly in the output field below.
+  </Step>
+  
+  <Step title="Copy the Result">
+    Once translated, tap the **Copy** button to copy the Morse code to your clipboard. A toast notification will confirm that the text has been copied.
+  </Step>
+</Steps>
+
+## Features
+
+### Translation
+
+The translation feature converts your input text character by character:
+
+- **Case Insensitive**: Both uppercase and lowercase letters produce the same Morse code output
+- **Character Spacing**: Each Morse code character is automatically separated by a space
+- **Unsupported Characters**: Characters not in the Morse code mapping (like emojis or special symbols) are preserved as-is in the output
+
+<Note>
+  The app processes each character individually, so "HELLO" and "hello" will produce identical Morse code output.
+</Note>
+
+### Clipboard Support
+
+MorseIt includes built-in clipboard functionality:
+
+1. After translating your text, the Morse code appears in the output field
+2. Tap the **Copy** button to copy the entire Morse code translation
+3. A confirmation message "Text Copied" appears at the bottom of the screen
+4. Paste the Morse code anywhere you need it - messages, notes, or other apps
+
+<Accordion title="How does the clipboard feature work?">
+  MorseIt uses Android's ClipboardManager to copy text to your system clipboard. The copied Morse code remains available until you copy something else, allowing you to paste it multiple times if needed.
+</Accordion>
+
+## Example Usage
+
+### Basic Translation
+
+**Input:**
+```
+HELLO WORLD
+```
+
+**Output:**
+```
+.... . .-.. .-.. ---   .-- --- .-. .-.. -..
+```
+
+### With Numbers and Punctuation
+
+**Input:**
+```
+SOS 123
+```
+
+**Output:**
+```
+... --- ...   .---- ..--- ...--
+```
+
+### Mixed Case
+
+**Input:**
+```
+HeLLo
+```
+
+**Output:**
+```
+.... . .-.. .-.. ---
+```
+
+<Note>
+  Notice how spaces in your input text are preserved in the output, helping maintain word boundaries in the Morse code translation.
+</Note>
+
+## Tips
+
+- Keep your text simple for the most accurate translations
+- Check the [Supported Characters](/guide/supported-characters) page to see what can be translated
+- The app works offline - no internet connection required
+- Translated Morse code can be shared via any app that accepts text

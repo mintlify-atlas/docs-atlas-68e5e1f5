@@ -1,0 +1,207 @@
+---
+title: 'Build and Run'
+description: 'Building and running the MorseIt app on emulators and physical devices'
+---
+
+## Building the Application
+
+### Using Android Studio
+
+<Steps>
+  <Step title="Open the Project">
+    Ensure the MorseIt project is open in Android Studio.
+  </Step>
+  
+  <Step title="Select Build Variant">
+    In the **Build Variants** panel (usually on the left side), select either:
+    - **debug** - for development builds with debugging enabled
+    - **release** - for production builds (requires signing configuration)
+  </Step>
+  
+  <Step title="Build the Project">
+    Click **Build > Make Project** or press `Ctrl+F9` (Windows/Linux) / `Cmd+F9` (macOS).
+  </Step>
+  
+  <Step title="Verify Build Success">
+    Check the **Build** output window for success messages. The APK will be generated in `app/build/outputs/apk/`.
+  </Step>
+</Steps>
+
+### Using Gradle Command Line
+
+You can also build the project using Gradle from the command line:
+
+<CodeGroup>
+```bash Debug Build
+./gradlew assembleDebug
+```
+
+```bash Release Build
+./gradlew assembleRelease
+```
+
+```bash Clean Build
+./gradlew clean assembleDebug
+```
+</CodeGroup>
+
+The generated APK files will be located at:
+- Debug: `app/build/outputs/apk/debug/app-debug.apk`
+- Release: `app/build/outputs/apk/release/app-release.apk`
+
+## Running on an Emulator
+
+### Create an Android Virtual Device (AVD)
+
+<Steps>
+  <Step title="Open AVD Manager">
+    Click **Tools > AVD Manager** in Android Studio.
+  </Step>
+  
+  <Step title="Create Virtual Device">
+    Click **Create Virtual Device** and select a device definition (e.g., Pixel 4).
+  </Step>
+  
+  <Step title="Select System Image">
+    Choose a system image with API level 23 or higher (MorseIt's minimum SDK):
+    - API 28 (Android 9.0 Pie) - recommended for testing
+    - API 23 (Android 6.0 Marshmallow) - for testing minimum requirements
+  </Step>
+  
+  <Step title="Finish Setup">
+    Configure AVD settings (RAM, storage, etc.) and click **Finish**.
+  </Step>
+</Steps>
+
+### Launch the App on Emulator
+
+<Steps>
+  <Step title="Start the Emulator">
+    In the AVD Manager, click the play button next to your virtual device to launch it.
+  </Step>
+  
+  <Step title="Select Device in Android Studio">
+    Once the emulator is running, select it from the device dropdown in the toolbar.
+  </Step>
+  
+  <Step title="Run the App">
+    Click the **Run** button (green play icon) or press `Shift+F10` (Windows/Linux) / `Ctrl+R` (macOS).
+  </Step>
+</Steps>
+
+<Note>
+  The first launch may take a few minutes as the emulator boots up and the app is installed.
+</Note>
+
+## Running on a Physical Device
+
+### Enable Developer Options
+
+<Steps>
+  <Step title="Enable Developer Mode">
+    On your Android device, go to **Settings > About Phone** and tap **Build Number** 7 times.
+  </Step>
+  
+  <Step title="Enable USB Debugging">
+    Go to **Settings > Developer Options** and enable **USB Debugging**.
+  </Step>
+  
+  <Step title="Connect Device">
+    Connect your Android device to your computer using a USB cable.
+  </Step>
+  
+  <Step title="Authorize Computer">
+    When prompted on your device, authorize your computer for USB debugging.
+  </Step>
+</Steps>
+
+### Deploy to Device
+
+<Steps>
+  <Step title="Verify Device Connection">
+    Your device should appear in the device dropdown in Android Studio's toolbar.
+  </Step>
+  
+  <Step title="Run the App">
+    Select your device from the dropdown and click the **Run** button.
+  </Step>
+  
+  <Step title="Grant Permissions">
+    If prompted on your device, grant any necessary permissions for the app to run.
+  </Step>
+</Steps>
+
+### Verify Device Connection (Command Line)
+
+You can verify that your device is connected using ADB:
+
+```bash
+adb devices
+```
+
+This should list your connected device. If not, ensure USB debugging is enabled and drivers are installed.
+
+## Running Tests
+
+MorseIt includes unit tests and instrumented tests.
+
+### Unit Tests
+
+Run unit tests from the command line:
+
+```bash
+./gradlew test
+```
+
+Or in Android Studio: right-click on `app/src/test/java` and select **Run Tests**.
+
+### Instrumented Tests
+
+Run instrumented tests (requires a connected device or emulator):
+
+```bash
+./gradlew connectedAndroidTest
+```
+
+Or in Android Studio: right-click on `app/src/androidTest/java` and select **Run Tests**.
+
+## Common Issues and Solutions
+
+<AccordionGroup>
+  <Accordion title="Gradle Sync Failed">
+    **Solution**: Check your internet connection and ensure you have the correct Android SDK installed. Try **File > Invalidate Caches / Restart**.
+  </Accordion>
+  
+  <Accordion title="Device Not Detected">
+    **Solution**: 
+    - Ensure USB debugging is enabled on your device
+    - Try a different USB cable or port
+    - Install appropriate USB drivers for your device
+    - Run `adb kill-server` followed by `adb start-server`
+  </Accordion>
+  
+  <Accordion title="App Crashes on Launch">
+    **Solution**: 
+    - Check the Logcat output in Android Studio for error messages
+    - Ensure your device meets the minimum SDK requirement (API 23)
+    - Try uninstalling and reinstalling the app
+  </Accordion>
+  
+  <Accordion title="Build Failed: SDK Not Found">
+    **Solution**: 
+    - Open **File > Project Structure > SDK Location**
+    - Ensure the Android SDK path is correctly set
+    - Install the required SDK platform (API 28) via SDK Manager
+  </Accordion>
+  
+  <Accordion title="Out of Memory Error During Build">
+    **Solution**: Increase Gradle heap size by editing `gradle.properties`:
+    ```properties
+    org.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+Now that you can build and run the app, learn about the codebase structure in [Project Structure](/development/project-structure).

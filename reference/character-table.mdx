@@ -1,0 +1,251 @@
+---
+title: Character Table
+description: Complete Morse code character reference extracted from MorseIt source code
+---
+
+## Overview
+
+This reference table contains all character-to-Morse code mappings used by MorseIt. The mappings are extracted directly from the `translateToMorse()` method in `MainActivity.java`.
+
+## Alphabet Characters
+
+### Letters A-Z
+
+MorseIt supports both uppercase and lowercase letters, which map to identical Morse code sequences.
+
+| Character | Morse Code | Character | Morse Code |
+|-----------|------------|-----------|------------|
+| A / a | `.-` | N / n | `-.` |
+| B / b | `-...` | O / o | `---` |
+| C / c | `-.-.` | P / p | `.--.` |
+| D / d | `-..` | Q / q | `--.-` |
+| E / e | `.` | R / r | `.-.` |
+| F / f | `..-.` | S / s | `...` |
+| G / g | `--.` | T / t | `-` |
+| H / h | `....` | U / u | `..-` |
+| I / i | `..` | V / v | `...-` |
+| J / j | `.---` | W / w | `.--` |
+| K / k | `-.-` | X / x | `-..-` |
+| L / l | `.-..` | Y / y | `-.--` |
+| M / m | `--` | Z / z | `--..` |
+
+<Note>
+  Case-insensitive: Both 'A' and 'a' translate to the same Morse code pattern.
+</Note>
+
+## Numeric Characters
+
+### Digits 0-9
+
+All ten digits are supported with standard International Morse Code patterns.
+
+| Digit | Morse Code | Pattern Description |
+|-------|------------|--------------------|
+| 0 | `-----` | Five dashes |
+| 1 | `.----` | One dot, four dashes |
+| 2 | `..---` | Two dots, three dashes |
+| 3 | `...--` | Three dots, two dashes |
+| 4 | `....-` | Four dots, one dash |
+| 5 | `.....` | Five dots |
+| 6 | `-....` | One dash, four dots |
+| 7 | `--...` | Two dashes, three dots |
+| 8 | `---..` | Three dashes, two dots |
+| 9 | `----.` | Four dashes, one dot |
+
+<Expandable title="Number Pattern Observation">
+Notice the symmetric pattern:
+- Numbers 1-5: Increasing dots, decreasing dashes
+- Numbers 6-9,0: Increasing dashes, decreasing dots
+</Expandable>
+
+## Punctuation Marks
+
+MorseIt supports four punctuation characters:
+
+| Character | Name | Morse Code |
+|-----------|------|------------|
+| . | Period/Full stop | `.-.-.-` |
+| , | Comma | `--..--` |
+| ? | Question mark | `..--..` |
+| = | Equals sign | `-...-` |
+
+## Source Code Mapping
+
+The character mappings are defined in `MainActivity.java:66-131`:
+
+<Expandable title="Complete HashMap Implementation">
+```java
+// Uppercase letters
+map.put('A', ".-");
+map.put('B', "-...");
+map.put('C', "-.-.");
+map.put('D', "-..");
+map.put('E', ".");
+map.put('F', "..-.");
+map.put('G', "--.");
+map.put('H', "....");
+map.put('I', "..");
+map.put('J', ".---");
+map.put('K', "-.-");
+map.put('L', ".-..");
+map.put('M', "--");
+map.put('N', "-.");
+map.put('O', "---");
+map.put('P', ".--.");
+map.put('Q', "--.-");
+map.put('R', ".-.");
+map.put('S', "...");
+map.put('T', "-");
+map.put('U', "..-");
+map.put('V', "...-");
+map.put('W', ".--");
+map.put('X', "-..-");
+map.put('Y', "-.--");
+map.put('Z', "--..");
+
+// Lowercase letters
+map.put('a', ".-");
+map.put('b', "-...");
+map.put('c', "-.-.");
+map.put('d', "-..");
+map.put('e', ".");
+map.put('f', "..-.");
+map.put('g', "--.");
+map.put('h', "....");
+map.put('i', "..");
+map.put('j', ".---");
+map.put('k', "-.-");
+map.put('l', ".-..");
+map.put('m', "--");
+map.put('n', "-.");
+map.put('o', "---");
+map.put('p', ".--.");
+map.put('q', "--.-");
+map.put('r', ".-.");
+map.put('s', "...");
+map.put('t', "-");
+map.put('u', "..-");
+map.put('v', "...-");
+map.put('w', ".--");
+map.put('x', "-..-");
+map.put('y', "-.--");
+map.put('z', "--..");
+
+// Digits
+map.put('0', "-----");
+map.put('1', ".----");
+map.put('2', "..---");
+map.put('3', "...--");
+map.put('4', "....-");
+map.put('5', ".....");
+map.put('6', "-....");
+map.put('7', "--...");
+map.put('8', "---..");
+map.put('9', "----.");
+
+// Punctuation
+map.put('.', ".-.-.-");
+map.put(',', "--..--");
+map.put('?', "..--..");
+map.put('=', "-...-");
+```
+</Expandable>
+
+## Unsupported Characters
+
+Any character not in the mapping table will be passed through unchanged in the output.
+
+<Note type="warning">
+Unsupported characters include:
+- Most special symbols (!, @, #, $, %, etc.)
+- Spaces (passed through as spaces)
+- Accented letters (é, ñ, ü, etc.)
+- Non-Latin scripts
+</Note>
+
+### Fallback Behavior
+
+When an unsupported character is encountered:
+
+```java
+String fetchedChar = map.get(upperChar);
+if (fetchedChar != null) {
+    morse_code.append(map.get(upperChar));  // Supported: add Morse code
+} else {
+    morse_code.append(input_field_text.charAt(i));  // Unsupported: keep original
+}
+```
+
+## Character Statistics
+
+| Category | Count | Characters |
+|----------|-------|------------|
+| Uppercase Letters | 26 | A-Z |
+| Lowercase Letters | 26 | a-z |
+| Digits | 10 | 0-9 |
+| Punctuation | 4 | . , ? = |
+| **Total Mappings** | **66** | - |
+
+<Note type="info">
+  The HashMap contains 88 total entries due to duplicate mappings for uppercase and lowercase letters.
+</Note>
+
+## International Morse Code Compliance
+
+All character mappings in MorseIt follow the International Morse Code (ITU-R M.1677-1) standard for letters and digits. The punctuation marks also follow standard conventions.
+
+## Quick Reference by Pattern Length
+
+<Expandable title="Characters by Morse Code Length">
+### Single Symbol
+- E: `.`
+- T: `-`
+
+### Two Symbols
+- I: `..`
+- A: `.-`
+- N: `-.`
+- M: `--`
+
+### Three Symbols
+- S: `...`
+- U: `..-`
+- R: `.-.`
+- W: `.--`
+- D: `-..`
+- K: `-.-`
+- G: `--.`
+- O: `---`
+
+### Four Symbols
+- H: `....`
+- V: `...-`
+- F: `..-.`
+- L: `.-..`
+- P: `.--.`
+- J: `.---`
+- B: `-...`
+- X: `-..-`
+- C: `-.-.`
+- Y: `-.--`
+- Z: `--..`
+- Q: `--.-`
+
+### Five Symbols
+- 5: `.....`
+- 4: `....-`
+- 3: `...--`
+- 2: `..---`
+- 1: `.----`
+- 6: `-....`
+- 7: `--...`
+- 8: `---..`
+- 9: `----.`
+- 0: `-----`
+- =: `-...-`
+
+### Six Symbols
+- .: `.-.-.-`
+- ,: `--..--`
+- ?: `..--..`
+</Expandable>

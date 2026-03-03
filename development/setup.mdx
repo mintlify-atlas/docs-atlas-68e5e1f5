@@ -1,0 +1,128 @@
+---
+title: 'Development Setup'
+description: 'Prerequisites and environment setup for MorseIt development'
+---
+
+## Prerequisites
+
+Before you start developing MorseIt, ensure you have the following tools and software installed on your system.
+
+### Required Software
+
+<Steps>
+  <Step title="Install Android Studio">
+    Download and install [Android Studio](https://developer.android.com/studio) (Arctic Fox or later recommended).
+  </Step>
+  
+  <Step title="Install Java Development Kit (JDK)">
+    Install JDK 8 or later. Android Studio typically includes a JDK, but you may need to configure it in your system PATH.
+  </Step>
+  
+  <Step title="Configure Android SDK">
+    Install the required Android SDK components through Android Studio's SDK Manager:
+    - Android SDK Platform 28 (Android 9.0 Pie)
+    - Android SDK Build-Tools 28.0.0 or later
+    - Android SDK Platform-Tools
+    - Android Emulator (for testing)
+  </Step>
+</Steps>
+
+### SDK Requirements
+
+MorseIt has specific SDK version requirements defined in `app/build.gradle`:
+
+- **Compile SDK Version**: 28 (Android 9.0 Pie)
+- **Minimum SDK Version**: 23 (Android 6.0 Marshmallow)
+- **Target SDK Version**: 28 (Android 9.0 Pie)
+
+<Note>
+  The minimum SDK version is 23, which means MorseIt supports devices running Android 6.0 (Marshmallow) and above.
+</Note>
+
+### System Requirements
+
+<CardGroup cols={2}>
+  <Card title="Windows" icon="windows">
+    - Windows 7/8/10/11 (64-bit)
+    - 8 GB RAM minimum, 16 GB recommended
+    - 8 GB available disk space
+  </Card>
+  
+  <Card title="macOS" icon="apple">
+    - macOS 10.14 (Mojave) or later
+    - 8 GB RAM minimum, 16 GB recommended
+    - 8 GB available disk space
+  </Card>
+  
+  <Card title="Linux" icon="linux">
+    - 64-bit distribution (Ubuntu 18.04 or later)
+    - 8 GB RAM minimum, 16 GB recommended
+    - 8 GB available disk space
+  </Card>
+</CardGroup>
+
+## Project Dependencies
+
+MorseIt uses the following key dependencies (from `app/build.gradle`):
+
+```gradle app/build.gradle
+dependencies {
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+```
+
+### Build Tools
+
+The project uses Gradle 3.2.1 for building:
+
+```gradle build.gradle
+classpath 'com.android.tools.build:gradle:3.2.1'
+```
+
+## Clone the Repository
+
+Clone the MorseIt repository to your local machine:
+
+<CodeGroup>
+```bash HTTPS
+git clone https://github.com/subinkr/MorseIt.git
+cd MorseIt
+```
+
+```bash SSH
+git clone git@github.com:subinkr/MorseIt.git
+cd MorseIt
+```
+</CodeGroup>
+
+## Import Project
+
+<Steps>
+  <Step title="Open Android Studio">
+    Launch Android Studio on your system.
+  </Step>
+  
+  <Step title="Import the Project">
+    Click **File > Open** and navigate to the cloned MorseIt directory. Select the root folder and click **OK**.
+  </Step>
+  
+  <Step title="Gradle Sync">
+    Android Studio will automatically detect the Gradle build files and begin syncing. Wait for the sync to complete.
+  </Step>
+  
+  <Step title="Verify Setup">
+    Once Gradle sync is complete, verify that there are no errors in the **Build** output window.
+  </Step>
+</Steps>
+
+<Note>
+  If you encounter issues with Gradle sync, ensure that your Android SDK is properly configured in **File > Project Structure > SDK Location**.
+</Note>
+
+## Next Steps
+
+Once your environment is set up, proceed to [Build and Run](/development/build-and-run) to learn how to compile and run the application.
