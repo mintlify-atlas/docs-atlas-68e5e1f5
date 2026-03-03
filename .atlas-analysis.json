@@ -1,0 +1,55 @@
+{
+  "projectType": "general",
+  "projectName": "MorseIt",
+  "projectDescription": "A lightweight Android app that translates plain text into Morse code with clipboard support",
+  "theme": "almond",
+  "primaryColor": "#008577",
+  "lightColor": "#00A896",
+  "darkColor": "#00574B",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "User Guide",
+        "pages": [
+          "guide/using-the-app",
+          "guide/supported-characters",
+          "guide/morse-code-basics"
+        ]
+      },
+      {
+        "group": "Development",
+        "pages": [
+          "development/setup",
+          "development/build-and-run",
+          "development/project-structure"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "reference/translation-logic",
+          "reference/technical-specs",
+          "reference/character-table"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Text-to-Morse translation for letters, digits, and punctuation",
+    "One-tap clipboard copy functionality",
+    "On-device translation with no network required",
+    "Clean, minimal Android interface"
+  ],
+  "publicApiSurface": [
+    "MainActivity.translateToMorse(String)",
+    "Translate button click handler",
+    "Copy to clipboard button handler"
+  ]
+}
